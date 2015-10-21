@@ -19,6 +19,7 @@
 
 | 服务商 | 模板短信 | 内容短信 |  最低消费  |  最低消费单价 |
 | ----- | :-----: | :----: | :-------: | :-----: |
+| [阿里大鱼](http://www.alidayu.com/)        | --  | --    |-- |--|
 | [Luosimao](http://luosimao.com)        | no  | yes    |￥850(1万条) |￥0.085/条|
 | [云片网络](http://www.yunpian.com)       | no | yes   |￥55(1千条)  |￥0.055/条|
 | [容联·云通讯](http://www.yuntongxun.com) | yes | no     |充值￥500   |￥0.055/条|
