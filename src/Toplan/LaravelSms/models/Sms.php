@@ -5,7 +5,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use \Queue;
 use \Validator;
-use \SmsManager;
 
 class Sms extends Model implements Sender{
 
@@ -44,7 +43,7 @@ class Sms extends Model implements Sender{
      */
     public function __construct()
     {
-        $this->agent   = SmsManager::agent();
+        $this->agent   = \SmsManager::agent();
         //init attributes
         $this->data    = json_encode([]);
         $this->content = '';
@@ -124,7 +123,7 @@ class Sms extends Model implements Sender{
             if (is_array($agentName)) {
                 $tempIdArray = $agentName;
             } else {
-                $defaultAgentName = SmsManager::getDefaultAgent();
+                $defaultAgentName = \SmsManager::getDefaultAgent();
                 $tempIdArray["$defaultAgentName"] = $agentName;
             }
         }

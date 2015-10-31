@@ -11,7 +11,8 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=5.4.0",
+        "luzhongyang/taobao-sdk": "dev-master"
     },
     "autoload": {
         "classmap": [
@@ -21,5 +22,18 @@
             "Toplan\\Sms": "src/"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "repositories": [
+        {
+            "packagist": false
+        },
+        {
+            "type": "vcs",
+            "url": "git@gitlab.jamor.net:luzhongyang/taobao-sdk.git"
+        },
+        {
+            "type": "composer",
+            "url": "http://packagist.phpcomposer.com"
+        }
+    ]
 }
