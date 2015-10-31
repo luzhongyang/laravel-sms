@@ -1,6 +1,7 @@
 <?php namespace Toplan\Sms;
 
-use \Input;
+use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Http\Request;
 use \SmsManager;
 use \Validator;
 use Illuminate\Routing\Controller;
@@ -14,39 +15,29 @@ class SmsController extends Controller {
         $this->smsModel = config('laravel-sms.smsModel', 'Toplan/Sms/Sms');
     }
 
-    public function postSendCode($rule, $mobile = '')
+    public function postSendCode($rule, $mobile = '', Request $request)
     {
         $vars = [];
-        $input = ['mobile' => $mobile];
+        $input = [
+            'mobile' => $mobile,
+            'phone' => $mobile,
+            'captcha' => $request->input('captcha')
+        ];
         $vars['success'] = false;
         //验证手机号合法性-------------------------------
         //设置手机号验证规则
+
         if (SmsManager::hasRule('mobile', $rule)) {
             SmsManager::rule('mobile', $rule);
         }
+
         $validator = Validator::make($input, [
-            'mobile' => 'required|mobile'
+            'phone' => ['required', 'mobile', SmsManager::getRule('mobile')],
+            'captcha' => SmsManager::getRule('captcha')
         ]);
+
         if ($validator->fails()) {
-            $vars['msg'] = '手机号格式错误，请输入正确的11位手机号';
-            $vars['type'] = 'mobile_error';
-            return response()->json($vars);
-        }
-        if (SmsManager::isCheck('mobile')) {
-            $validator = Validator::make($input, [
-                'mobile' => SmsManager::getRule('mobile')
-            ]);
-            if ($validator->fails()) {
-                if ($rule == 'check_mobile_unique') {
-                    $vars['msg'] = '该手机号码已存在';
-                } elseif ($rule == 'check_mobile_exists') {
-                    $vars['msg'] = '不存在此手机号码';
-                } else {
-                    $vars['msg'] = '抱歉，你的手机号未通过合法性检测';
-                }
-                $vars['type'] = 'mobile_error';
-                return response()->json($vars);
-            }
+            return response()->json($validator->errors(), '422');
         }
         //------------------------------------------
 
